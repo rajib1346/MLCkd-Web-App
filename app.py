@@ -8,7 +8,7 @@ import time
 app = Flask(__name__)
 
 #Load the trained model. (Pickle file)
-model = pickle.load(open('C:/Users/acer/ckd/models/model.pkl', 'rb'))
+model = pickle.load(open('models/model.pkl', 'rb'))
 
 #Define the route to be home. 
 #The decorator below links the relative route of the URL to the function it is decorating.
