@@ -1,14 +1,15 @@
 import pandas as pd
 import numpy as np
 from flask import Flask, request, render_template
+import pickle
 import time
-from joblib import load   # better than pickle
 
 # Initialize Flask app
 app = Flask(__name__)
 
-# Load trained model
-model = load('models/model.joblib')   # make sure file exists
+# Load model correctly
+with open('models/model.pkl', 'rb') as f:
+    model = pickle.load(f)
 
 # Home route
 @app.route('/')
@@ -19,7 +20,7 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        # Get user input
+        # Input
         name = request.form['name']
         bg = request.form['bg']
         sex = request.form['sex']
@@ -47,7 +48,7 @@ def predict():
         pe = float(request.form['pe'])
         ane = float(request.form['ane'])
 
-        # Prepare input for model
+        # Features
         features = [[age, bp, sg, al, su, bgr, bu, sc, sod, pot,
                      hemo, rbc, pc, pcc, ba, wc, htn, dm, cad, appet, pe, ane]]
 
@@ -57,7 +58,7 @@ def predict():
         end_time = time.time()
         testing_time = round(end_time - start_time, 4)
 
-        # Convert numeric to readable
+        # Convert values
         rbc = "Normal" if rbc == 1 else "Abnormal"
         pc = "Normal" if pc == 1 else "Abnormal"
         pcc = "Present" if pcc == 1 else "Not Present"
@@ -92,7 +93,6 @@ def predict():
 
     except Exception as e:
         return f"Error: {str(e)}"
-
 
 # Run app
 if __name__ == "__main__":
