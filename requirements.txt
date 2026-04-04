@@ -1,7 +1,8 @@
+python
 Flask
 pandas
-scikit-learn
 numpy
 requests
-gunicorn
 pickle4
+gunicorn
+scikit-learn
